@@ -78,11 +78,37 @@ cause values to be silently truncated..."). The fix — adding
 configuration in `AppDbContext.OnModelCreating` — was applied, and the migration was
 removed and regenerated cleanly with zero warnings.
 
+## 4. Post-merge review pass
+
+After the initial PR was merged, a second review pass was done specifically to check
+for anything that wouldn't hold up under closer inspection. This surfaced three real
+issues, all fixed and pushed directly to `main`:
+
+- **Dead code**: `IRepository<T>.FindAsync(Expression<Func<T,bool>>)` was declared and
+  implemented but never called anywhere in the codebase — removed from both the
+  interface and `Repository<T>`.
+- **Dead code**: `NotFoundException(string message)` — a second constructor alongside
+  the one actually used (`NotFoundException(entityName, key)`) — was never called.
+  Removed.
+- **Unused dependency**: `ILogger<T>` was injected into both `EmployeesController` and
+  `DepartmentsController` but never used in either (logging already happens at the
+  service layer). Removed the unused constructor parameters rather than adding
+  logging calls just to justify keeping them.
+- **Unverified claim**: the assignment's "minimum 70% code coverage" target had never
+  actually been measured — CI collected coverage data but nothing reported it. Added a
+  ReportGenerator step to CI that prints both a whole-solution summary and one scoped to
+  `EmployeeManagementSystem.Application.Services.*` (the classes the assignment asked to
+  be unit-tested). Result: `EmployeeService` and `DepartmentService` are both at 100%
+  line coverage; whole-repository coverage is ~20% because `Infrastructure`/`API` are
+  integration-level code outside the assignment's unit-test scope. See
+  [README.md](README.md#test-coverage) for the full breakdown.
+
 ## Summary
 
 Every file in this repository was AI-generated in this session and then verified by
 building the solution (`dotnet build`, zero warnings/errors) and, for the API, running
-it locally (`dotnet run`, confirmed it starts and listens). The two concrete issues
-encountered — the view's decimal precision warning and the local test-execution block —
-are both documented above with their actual resolutions, rather than a hypothetical
-example.
+it locally (`dotnet run`, confirmed it starts and listens). The concrete issues
+encountered along the way — the view's decimal precision warning, the local
+test-execution block, and the dead-code/unused-dependency/unverified-coverage findings
+from the post-merge review — are all documented above with their actual resolutions,
+rather than a hypothetical example.

@@ -13,12 +13,10 @@ namespace EmployeeManagementSystem.API.Controllers;
 public class EmployeesController : ControllerBase
 {
     private readonly IEmployeeService _employeeService;
-    private readonly ILogger<EmployeesController> _logger;
 
-    public EmployeesController(IEmployeeService employeeService, ILogger<EmployeesController> logger)
+    public EmployeesController(IEmployeeService employeeService)
     {
         _employeeService = employeeService;
-        _logger = logger;
     }
 
     /// <summary>Gets all employees.</summary>

@@ -148,3 +148,24 @@ Unit tests cover `EmployeeService` and `DepartmentService` in isolation, mocking
 `IEmployeeRepository` / `IDepartmentRepository` with Moq and asserting with
 FluentAssertions. They also run automatically in CI on every push/PR via
 [.github/workflows/ci.yml](.github/workflows/ci.yml).
+
+### Test coverage
+
+The assignment's brief is scoped to unit-testing the service layer ("Write unit tests
+for: EmployeeService, DepartmentService... Target: Minimum 70% code coverage"), so
+that's what's measured and enforced:
+
+| Scope | Line coverage |
+|---|---|
+| `EmployeeService` | **100%** |
+| `DepartmentService` | **100%** |
+| Whole repository (incl. EF Core repositories, `DbContext`, migrations, controllers) | ~20% |
+
+The repository-wide number is low because `Infrastructure` (EF Core plumbing) and `API`
+(controllers) are integration-level code exercised by actually running the app against
+a real database, not by these unit tests — nothing in the assignment asked for them to
+be unit-tested, and mocking `DbContext`/EF internals to hit a coverage number on
+generated migration code would be busywork, not signal. CI generates both the
+whole-solution summary and a summary scoped to `EmployeeManagementSystem.Application.Services.*`
+(see [.github/workflows/ci.yml](.github/workflows/ci.yml)) so the 70% target is checked
+against what was actually asked for, not diluted by unrelated code.

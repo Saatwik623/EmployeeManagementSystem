@@ -30,13 +30,23 @@ jobs:
       - name: Install ReportGenerator
         run: dotnet tool install --global dotnet-reportgenerator-globaltool --version 5.3.11
 
-      - name: Generate coverage summary
+      - name: Generate coverage summary (whole solution)
         run: |
           reportgenerator \
             -reports:./coverage/**/coverage.cobertura.xml \
             -targetdir:./coverage/report \
             -reporttypes:TextSummary
           cat ./coverage/report/Summary.txt
+
+      - name: Generate coverage summary (EmployeeService / DepartmentService only)
+        run: |
+          reportgenerator \
+            -reports:./coverage/**/coverage.cobertura.xml \
+            -targetdir:./coverage/report-services \
+            -reporttypes:TextSummary \
+            -classfilters:"+EmployeeManagementSystem.Application.Services.*"
+          echo "--- Coverage for the classes this project's unit tests target (EmployeeService, DepartmentService) ---"
+          cat ./coverage/report-services/Summary.txt
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4

@@ -13,12 +13,10 @@ namespace EmployeeManagementSystem.API.Controllers;
 public class DepartmentsController : ControllerBase
 {
     private readonly IDepartmentService _departmentService;
-    private readonly ILogger<DepartmentsController> _logger;
 
-    public DepartmentsController(IDepartmentService departmentService, ILogger<DepartmentsController> logger)
+    public DepartmentsController(IDepartmentService departmentService)
     {
         _departmentService = departmentService;
-        _logger = logger;
     }
 
     /// <summary>Gets all departments.</summary>

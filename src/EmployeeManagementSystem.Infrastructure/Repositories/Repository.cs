@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using EmployeeManagementSystem.Domain.Interfaces;
 using EmployeeManagementSystem.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -19,9 +18,6 @@ public class Repository<T> : IRepository<T> where T : class
     public virtual async Task<T?> GetByIdAsync(int id) => await DbSet.FindAsync(id);
 
     public virtual async Task<IReadOnlyList<T>> GetAllAsync() => await DbSet.ToListAsync();
-
-    public virtual async Task<IReadOnlyList<T>> FindAsync(Expression<Func<T, bool>> predicate) =>
-        await DbSet.Where(predicate).ToListAsync();
 
     public virtual async Task AddAsync(T entity) => await DbSet.AddAsync(entity);
 
