@@ -21,7 +21,7 @@ writing the test files.
 
 **Generated output:**
 - [tests/EmployeeManagementSystem.Tests/Services/EmployeeServiceTests.cs](tests/EmployeeManagementSystem.Tests/Services/EmployeeServiceTests.cs)
-  — 15 tests covering add/update/delete/get-by-id/get-all/search/filter-by-department/
+  — 17 tests covering add/update/delete/get-by-id/get-all/search/filter-by-department/
   get-active, including the validation paths for a non-existent department and a
   duplicate email on both create and update.
 - [tests/EmployeeManagementSystem.Tests/Services/DepartmentServiceTests.cs](tests/EmployeeManagementSystem.Tests/Services/DepartmentServiceTests.cs)
